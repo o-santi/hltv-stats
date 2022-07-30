@@ -1,3 +1,5 @@
+const HLTV = require('hltv-api').default
+
 async function connect(){
     if(global.connection && global.connection.state !== 'disconnected')
         return global.connection;
@@ -9,7 +11,7 @@ async function connect(){
     return connection;
 }
 
-async function selectPlayers(conn){
+async function selectPlayers(conn) {
     const [rows] = await conn.query('SELECT * FROM player;');
     return rows;
 }
@@ -27,9 +29,8 @@ async function insertPlayer(player, conn) {
     return await conn.query(sql, values);
 }
 
-async function insertTeam(team_id, fetch, conn) {
-    let url = `http://localhost:3000/teams/${team_id}`
-    let team = await (await fetch(url)).json();
+async function insertTeam(team_id, conn) {
+    let team = await HLTV.getTeamById(team_id);
     const sql = 'INSERT INTO team VALUES (?,?,?,?);';
     const values = [team.id,
 		    team.name,
@@ -38,13 +39,16 @@ async function insertTeam(team_id, fetch, conn) {
     return await conn.query(sql, values);
 }
 
-async function addMoreInfo(player_id, fetch, conn) {
-    let url = `http://localhost:3000/players/${player_id}`
-    let json = await (await fetch(url)).json();
+async function updatePlayerInfo(player_id, conn) {
+    let json = await HLTV.getPlayerById(player_id);
     const sql = `UPDATE player SET image=?, team_id=?, name=?, age=? WHERE id=${player_id}`;
     const values = [json.image, json.team.id, json.name, json.age];
     await conn.query(sql, values);
 }
 
-module.exports = {connect, selectPlayers, insertPlayer, addMoreInfo, insertTeam}
+async function insertMatch(match_id, conn) {
+    
+}
+
+module.exports = {connect, selectPlayers, insertPlayer, updatePlayerInfo, insertTeam, insertMatch}
 

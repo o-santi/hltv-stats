@@ -29,6 +29,7 @@ app.get('/top-teams', async (req, res) => {
   const teams = await HLTV.getTopTeams()
   res.json(teams)
 })
+
 app.get('/teams/:teamId', async (req, res) => {
   const team = await HLTV.getTeamById(req.params.teamId)
   res.json(team)
