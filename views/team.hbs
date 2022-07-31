@@ -1,0 +1,35 @@
+<div class='team'>
+  <img src={{team.logo}}>
+  <h1><b>Nome:</b> {{team.name}}</h1>
+  <table>
+    <tr>
+      <th></th>
+      <th>Nick</th>
+    </tr>
+    <div class="team_players">
+   {{#each players}}
+    <tr>
+      <td><a href="/player/{{this.id}}"><img src="{{this.image}}" style="display:block" width="80" height="80"></img></a></td>
+      <td>{{this.nickname}}</td>
+    </tr>
+    {{/each}}
+  </table>
+  </div>
+  <div class="team_matches">
+    <table>
+      {{#each matches}}
+      <tr>
+	<td><a href="/team/{{this.team_id}}"><img src="{{this.team_logo}}" width="80" height="80"></img></a></td>
+	<td><a href="/match/{{this.id}}">{{this.team_name}}</a></td>
+	<td><b>{{this.team_maps}}</b></td>
+	<td><b>VS</b></td>
+	<td><b>{{this.enemy_maps}}</b></td>
+	<td><a href="/team/{{this.enemy_id}}"><img src="{{this.enemy_logo}}" width="80" height="80"></img></a></td>
+	<td><a href="/match/{{this.id}}">{{this.enemy_name}}</a></td>
+	<td>{{this.eventName}}</td>
+	<td>{{this.date}}</td>
+      </tr>
+      {{/each}}
+    </table>
+  </div>
+</div>

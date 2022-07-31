@@ -1,0 +1,65 @@
+.title {
+    justify-content:center;
+}
+
+.search_box{
+    padding: 2%;
+    display: flex;
+    justify-content:center;
+}
+
+.top_bar {
+    background-color: CornflowerBlue;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 100%;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.results_table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+}
+.results_table th tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+.player_search {
+    width: 50%;
+    height: 100%;
+    float: left;
+    background-color: lightblue;
+}
+.team_search {
+    width: 50%;
+    height: 100%;
+    float: right;
+    background-color: lightblue;
+}
+
+
+
+h1 {
+    color: navy;
+}
+
+#task {
+    padding: 1% 2%;
+    border-color: navy;
+}
+
+#submit {
+    padding: 1% 2%;
+    border-color: navy;
+    background-color: navy;
+    color: white;
+}
