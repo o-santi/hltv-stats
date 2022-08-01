@@ -9,7 +9,6 @@
 }
 
 .top_bar {
-    background-color: CornflowerBlue;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -21,6 +20,7 @@
     -ms-flex-pack: center;
     justify-content: center;
 }
+
 .results_table {
     border-collapse: collapse;
     margin: 25px 0;
@@ -28,7 +28,6 @@
     min-width: 400px;
 }
 .results_table th tr {
-    background-color: #009879;
     color: #ffffff;
     text-align: left;
 }
@@ -37,29 +36,24 @@
     width: 50%;
     height: 100%;
     float: left;
-    background-color: lightblue;
 }
 .team_search {
     width: 50%;
     height: 100%;
     float: right;
-    background-color: lightblue;
 }
-
 
 
 h1 {
     color: navy;
 }
 
-#task {
-    padding: 1% 2%;
-    border-color: navy;
+.center {
+    width: 50%;
+    margin: 0 auto;
 }
-
-#submit {
-    padding: 1% 2%;
-    border-color: navy;
-    background-color: navy;
-    color: white;
+header {
+    background-color: CornflowerBlue;
+    text-align: center;
+    padding: 5px;
 }

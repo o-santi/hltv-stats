@@ -1,6 +1,6 @@
 const connection = require("./connection");
 const express = require('express');
-const hbs = require('express-handlebars');
+const exphbs = require('express-handlebars');
 const session = require('express-session');
 const bodyParser = require("body-parser");
 
@@ -8,13 +8,29 @@ var app = express();
 
 app._conn = false;
 
-app.use(express.static('public'), session({secret: 'mySecret', resave: false, saveUninitialized: false}));
-
-app.engine('hbs', hbs.engine({
+var hbs = exphbs.create({
+    helpers: {
+	par: (x) => x % 2,
+	bigger: (x, y) => x > y,
+	compare_match: (x, y) => {
+	    if (x >y) return "DarkSeaGreen";
+	    else if (y > x) return "DarkSalmon";
+	    else return "gray";
+	},
+	compare_result: (x, y) => {
+	    if (x >y) return "green";
+	    else if (y > x) return "red";
+	    else return "gray";
+	}
+    },
     layoutsDir: __dirname + '/views/layouts',
     defaultLayout: 'main',
     extname: '.hbs'
-}));
+})
+
+app.use(express.static('public'), session({secret: 'mySecret', resave: false, saveUninitialized: false}));
+
+app.engine('hbs', hbs.engine);
 
 app.set('view engine', 'hbs');
 
@@ -76,9 +92,8 @@ app.get('/player/:player_id', async (req, res) => {
     let [[player], [team], [adr], [kills], [deaths], [partidas_count], matches] = results;
     for (var i = 0; i < matches.length; i++){
 	match = matches[i]
-	match.date = match.DateTime.toLocaleString("pt-BR");
+	match.date = match.DateTime.toLocaleString("pt-BR", {day:'2-digit', month:'2-digit', year:'2-digit', hour: '2-digit', minute:'2-digit'});
     }
-    console.log(player)
     res.render('player',
 	       {player: player,
 		team: team,
@@ -109,7 +124,7 @@ app.get('/team/:team_id', async (req, res) => {
     let [[team], players, matches] = result;
     for (var i = 0; i < matches.length; i++){
 	match = matches[i]
-	match.date = match.DateTime.toLocaleString("pt-BR");
+	match.date = match.DateTime.toLocaleString("pt-BR", {day:'2-digit', month:'2-digit', year:'2-digit', hour: '2-digit', minute:'2-digit'});
     }
     console.log(players);
     res.render('team',
@@ -151,15 +166,22 @@ app.get('/match/:match_id', async (req, res) => {
     INNER JOIN Score AS ScoreT2 
     ON ScoreT2.mapPlayed_id = MapPlayed.id AND ScoreT2.team_id = ${team2.id}
     INNER JOIN Team AS T2 ON ScoreT2.team_id = T2.id
-    ORDER BY MapPlayed.order ASC;`;
-   
+    ORDER BY MapPlayed.order ASC;
+
+    SELECT P.nickname, PMS.kills, PMS.deaths, PMS.rating
+    FROM PlayerStatsByMatch AS PMS INNER JOIN Player AS P ON PMS.player_id = P.id
+    INNER JOIN \`Match\` AS M ON PMS.match_id = M.id
+    WHERE PMS.match_id = ${match_id}
+    AND   PMS.rating >= ALL (SELECT rating FROM PlayerStatsByMatch AS subPMS INNER JOIN
+                  \`Match\` AS subM ON subPMS.match_id = subM.id WHERE subPMS.match_id = ${match_id});
+`;
     let [result] = await app._conn.query(second_query)
-    let [team1_players, team2_players, map_result] = result;
+    let [team1_players, team2_players, map_result, [mvp]] = result;
     team1.players = team1_players;
     team2.players = team2_players;
     let teams_info = [team1, team2]
-    date = team1.DateTime.toLocaleString();
-    
+    date = team1.DateTime.toLocaleString("pt-BR", {day:'2-digit', month:'2-digit', year:'2-digit', hour: '2-digit', minute:'2-digit'});
+    map_result.mvp = mvp;
     res.render('match',
 	       {teams: teams_info,
 		map_result: map_result,

@@ -1,12 +1,13 @@
 <div class='team'>
-  <img src={{team.logo}}>
-  <h1><b>Nome:</b> {{team.name}}</h1>
+  <div class="center"> 
+    <img src="{{team.logo}}" width="300vh" height="300vh" style="float: left;padding-right:20px;">
+  <h1>{{team.name}}</h1>
   <table>
     <tr>
       <th></th>
       <th>Nick</th>
     </tr>
-    <div class="team_players">
+    <div class="center">
    {{#each players}}
     <tr>
       <td><a href="/player/{{this.id}}"><img src="{{this.image}}" style="display:block" width="80" height="80"></img></a></td>
@@ -15,15 +16,14 @@
     {{/each}}
   </table>
   </div>
-  <div class="team_matches">
-    <table>
+  <div class="center">
+  <h2>Partidas recentes</h2>
+    <table style="border-collapse:collapse;" cellpadding='10'>
       {{#each matches}}
-      <tr>
+      <tr style="border-bottom: 1px ridge black; background-color:{{compare_match this.team_maps this.enemy_maps}};">
 	<td><a href="/team/{{this.team_id}}"><img src="{{this.team_logo}}" width="80" height="80"></img></a></td>
 	<td><a href="/match/{{this.id}}">{{this.team_name}}</a></td>
-	<td><b>{{this.team_maps}}</b></td>
-	<td><b>VS</b></td>
-	<td><b>{{this.enemy_maps}}</b></td>
+	<td><b>{{this.team_maps}} x {{this.enemy_maps}}</b></td>
 	<td><a href="/team/{{this.enemy_id}}"><img src="{{this.enemy_logo}}" width="80" height="80"></img></a></td>
 	<td><a href="/match/{{this.id}}">{{this.enemy_name}}</a></td>
 	<td>{{this.eventName}}</td>

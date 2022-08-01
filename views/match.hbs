@@ -1,48 +1,53 @@
 
 <div class="results">
+  <div style="height:100%; width: 50%; margin: 0 auto; text-align:center;"> 
+    <h1>{{teams.0.name}} <font color="{{compare_result teams.0.mapsWon teams.1.mapsWon}}">{{teams.0.mapsWon}}</font> x <font color="{{compare_result teams.1.mapsWon teams.0.mapsWon}}">{{teams.1.mapsWon}}</font> {{teams.1.name}}</h1>											
+    <h3>{{teams.0.eventName}} -- {{date}}</h3>
+    <h3>MVP: {{map_result.mvp.nickname}} {{map_result.mvp.rating}} ({{map_result.mvp.kills}}/{{map_result.mvp.deaths}})</h3>
+  </div>
 
-  <h1>{{teams.0.name}} ({{teams.0.mapsWon}}) x ({{teams.1.mapsWon}}) {{teams.1.name}}</h1>
-  <h3>{{teams.0.eventName}} -- {{date}}</h3>
-
-  <div class="scoreboard">
-  {{#each teams}}
-  <div>
-    <div style="float:left">
-      <img src='{{this.logo}}' width="50vw" height="50vh"></img>
+  <div style="padding:10px; width:50%; margin: 0 auto;">
+    <div style="width:70%; margin: 0 auto;">
+    {{#each teams}}
+    <div>
+      <div style="float:left;">
+	<img src='{{this.logo}}' width="50vw" height="50vh"></img>
+      </div>
+    <h2>{{this.name}}</h2>
     </div>
-    <h2> {{this.name}}</h2>
-  </div>
-  <table>
-    <tr>
-      <th>Nick</th>
-      <th>Abates</th>
-      <th>Mortes</th>
-      <th>Rating</th>
-      <th>DPR</th>
-      <th>KAST</th>
-    </tr>
-    {{#each this.players}}
-    <tr>
-      <td>{{this.nickname}}</td>
-      <td>{{this.kills}}</td>
-      <td>{{this.deaths}}</td>
-      <td>{{this.rating}}</td>
-      <td>{{this.ADR}}</td>
-      <td>{{this.kast}}</td>
-    </tr>
-    {{/each}}
+    <table style="border-collapse:collapse; width:100%">
+      <tr>
+	<th align="left" width="30%">Nick</th>
+	<th align="left">Abates</th>
+	<th align="left">Mortes</th>
+	<th align="left">Rating</th>
+	<th align="left">DPR</th>
+	<th align="left">KAST</th>
+      </tr>
+      {{#each this.players}}
+      <tr style="background-color:{{#if (par @index)}}PaleTurquoise;{{else}}LightSkyBlue{{/if}}">
+	<td style="max-width:0;">{{this.nickname}}</td>
+	<td>{{this.kills}}</td>
+	<td>{{this.deaths}}</td>
+	<td>{{this.rating}}</td>
+	<td>{{this.ADR}}</td>
+	<td>{{this.kast}}</td>
+      </tr>
+      {{/each}}
     </table>
-  {{/each}}
+    {{/each}}
+    </div>
   </div>
-  <div class="map_result">
+  <div class="center" style="text-align: center;">
     <h2>Mapas</h2>
-    <table>
+    <div class="center">
+    <table width="100%">
       {{#each map_result}}
       <tr>
 	<td><img src='/img/maps/{{this.map_name}}.jpeg' style="float:left; margin-left:2%;" width="300vw" height="200vh"></td>
 	<td>
 	  <div style="margin-left:10%">
-	    <h4><nobr>{{this.map_name}} -- {{this.team1_name}} ({{this.team1_points}}) x ({{this.team2_points}}) {{this.team2_name}}</nobr></h4>
+	    <h4><nobr>{{this.map_name}} -- {{this.team1_name}} <font color="{{compare_result this.team1_points this.team2_points}}">{{this.team1_points}}</font> x <font color="{{compare_result this.team2_points this.team1_points}}">{{this.team2_points}}</font> {{this.team2_name}}</nobr></h4>
 	    {{#if this.pick}}
 	    Picked By: {{this.team1_name}}
 	    {{else}}
@@ -53,5 +58,6 @@
 	</td>
       </tr>
     {{/each}}
-  </div>
+</div>
+</div>
 </div>

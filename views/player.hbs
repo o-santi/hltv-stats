@@ -1,25 +1,25 @@
 <div class='player'>
-  <img src={{player.image}}>
-  <h1><b>Nome:</b> {{player.name}}</h1>
-  <h1><b>Nick:</b> {{player.nickname}}</h1>
-  {{#if team}}
-  <h1><b>Time:</b> <a href="/team/{{team.id}}">{{team.name}}</a></h1>
-  {{/if}}
-  
-  <h1><b>Idade:</b> {{player.age}}</h1>
-  <h4><b>Rating:</b> {{player.rating}}</h4>
-  <h4><b>DPR:</b> {{adr}} </h4>
-  <h4><b>Abates:</b> {{kills}}</h4>
-  <h4><b>Mortes:</b> {{deaths}}</h4>
+  <div class="center">
+      <img src='{{player.image}}' height="350vh" style="float: left;padding-right:20px;">
+      <h1>{{player.name}} - {{player.nickname}}</h1>
+      {{#if team}}
+      <h1><a href="/team/{{team.id}}">{{team.name}}</a></h1>
+      {{/if}}
+      <h2><b>Idade:</b> {{player.age}}</h2>
+      <h4><b>Rating:</b> {{player.rating}}</h4>
+      <h4><b>DPR:</b> {{adr}} </h4>
+      <h4><b>Abates:</b> {{kills}}</h4>
+      <h4><b>Mortes:</b> {{deaths}}</h4>
+  </div>
+  <div class="center">
+  <h2>Partidas recentes</h2>
   <div class="player_matches">
-    <table>
+    <table style="border-collapse:collapse;" cellpadding='10'>
       {{#each matches}}
-      <tr>
+      <tr style="border-bottom: 1px ridge black; background-color:{{compare_match this.team_maps this.enemy_maps}}">
 	<td><a href="/team/{{this.team_id}}"><img src="{{this.team_logo}}" width="80" height="80"></img></a></td>
 	<td><a href="/match/{{this.id}}">{{this.team_name}}</a></td>
-	<td><b>{{this.team_maps}}</b></td>
-	<td><b>VS</b></td>
-	<td><b>{{this.enemy_maps}}</b></td>
+	<td><b>{{this.team_maps}} x {{this.enemy_maps}}</b></td>
 	<td><a href="/team/{{this.enemy_id}}"><img src="{{this.enemy_logo}}" width="80" height="80"></img></a></td>
 	<td><a href="/match/{{this.id}}">{{this.enemy_name}}</a></td>
 	<td>{{this.eventName}}</td>
@@ -27,4 +27,5 @@
       </tr>
       {{/each}}
     </table>
+    </div>
 </div>
