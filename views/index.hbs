@@ -9,46 +9,48 @@
 
 <div class='results'>
   {{#if searching}}
-  <div class="player_search">
-    {{#if players}}
-    <h3>{{player_result_quant}} jogadores encontrados parecidos com '{{query_name}}'.</h3>
-    <table class="results_table">
-      <tr>
-	<th></th>
-	<th>Nome</th>
-	<th>Nickname</th>
-      </tr>
-      {{#each players}}
-      <tr>
-	<td><a href="/player/{{this.id}}"><img src={{this.image}} style="display:block" height="80" width="80"></img></a></td>
-	<td>{{this.name}}</td>
-	<td>{{this.nickname}}</td>
-      </tr>
-      {{/each}}
-    </table>
-    {{else}}
-    <h3>Nenhum jogador encontrado parecido com '{{query_name}}'.</h3>
-    {{/if}}
-  </div>
+  <div class="center">
+    <div class="player_search">
+      {{#if players}}
+      <h3>{{player_result_quant}} jogadores encontrados parecidos com '{{query_name}}'.</h3>
+      <table class="results_table">
+	<tr>
+	  <th></th>
+	  <th>Nome</th>
+	  <th>Nickname</th>
+	</tr>
+	{{#each players}}
+	<tr>
+	  <td><a href="/player/{{this.id}}"><img src={{this.image}} style="display:block" height="80" width="80"></img></a></td>
+	  <td>{{this.name}}</td>
+	  <td>{{this.nickname}}</td>
+	</tr>
+	{{/each}}
+      </table>
+      {{else}}
+      <h3>Nenhum jogador encontrado parecido com '{{query_name}}'.</h3>
+      {{/if}}
+    </div>
 
-  <div class="team_search">
-    {{#if teams}}
-    <h3>{{teams_result_quant}} times encontrados parecidos com '{{query_name}}'.</h3>
-    <table>
-      <tr>
-	<th></th>
-	<th>Nome</th>
-      </tr>
-      {{#each teams}}
-       <tr>
-	<td><a href="/team/{{this.id}}"><img src={{this.image}} style="display:block" height="80" width="80"></img></a></td>
-	<td>{{this.name}}</td>
-      </tr>
-      {{/each}}
-    </table>
-    {{else}}
-    <h3>Nenhum time encontrado parecido com '{{query_name}}'.</h3>
+    <div class="team_search">
+      {{#if teams}}
+      <h3>{{teams_result_quant}} times encontrados parecidos com '{{query_name}}'.</h3>
+      <table>
+	<tr>
+	  <th></th>
+	  <th>Nome</th>
+	</tr>
+	{{#each teams}}
+	<tr>
+	  <td><a href="/team/{{this.id}}"><img src={{this.image}} style="display:block" height="80" width="80"></img></a></td>
+	  <td>{{this.name}}</td>
+	</tr>
+	{{/each}}
+      </table>
+      {{else}}
+      <h3>Nenhum time encontrado parecido com '{{query_name}}'.</h3>
+      {{/if}}
+    </div>
     {{/if}}
   </div>
-  {{/if}}
 </div>
