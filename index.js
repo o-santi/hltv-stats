@@ -57,7 +57,9 @@ app.get('/', (req, res) => {
 
 app.post('/search/', async (req, res) => {
     let query_name = req.body.query_name;
-    let sql_query = `SELECT image, name, nickname, id FROM Player WHERE name like '${query_name}%' or nickname like '${query_name}%'; SELECT logo as image, name, id FROM Team WHERE name like '${query_name}%';`;
+    let sql_query = `
+    SELECT image, name, nickname, id FROM Player WHERE name like '${query_name}%' union SELECT image, name, nickname, id FROM Player WHERE nickname like '${query_name}%';
+    SELECT logo as image, name, id FROM Team WHERE name like '${query_name}%';`;
     let [result] = await app._conn.query(sql_query)
     let [players, teams] = result;
     console.log(players, teams);
@@ -76,7 +78,6 @@ app.get('/player/:player_id', async (req, res) => {
       SELECT avg(adr) as avg_adr FROM PlayerStatsByMatch INNER JOIN Player on player_id = Player.id INNER JOIN \`Match\` on match_id = Match.id WHERE Player.id = ${player_id};
       SELECT sum(kills) as sum_kills FROM PlayerStatsByMatch INNER JOIN Player on player_id = Player.id INNER JOIN \`Match\` on match_id = Match.id WHERE Player.id = ${player_id};
       SELECT sum(deaths) as sum_deaths FROM PlayerStatsByMatch INNER JOIN Player on player_id = Player.id INNER JOIN \`Match\` on match_id = Match.id WHERE Player.id = ${player_id};
-      SELECT count(match_id) as partidas FROM PlayerStatsByMatch INNER JOIN Player on player_id = Player.id WHERE Player.id = ${player_id};
       SELECT Match.id, Match.eventName, Match.DateTime, Enemy.name as enemy_name, Enemy.logo as enemy_logo, Enemy.id as enemy_id, PlayerTeam.name as team_name, PlayerTeam.logo as team_logo, PlayerTeam.id as team_id, EnemyPartakes.mapsWon as enemy_maps, TeamPartakes.mapsWon as team_maps
       FROM PlayerStatsByMatch 
       INNER JOIN Player ON player_id = Player.id
@@ -87,9 +88,10 @@ app.get('/player/:player_id', async (req, res) => {
       INNER JOIN TeamPartakesInMatch AS TeamPartakes ON TeamPartakes.match_id = Match.id AND TeamPartakes.team_id = PlayerTeam.id
       WHERE Player.id = ${player_id} AND Enemy.id <> PlayerTeam.id
       ORDER BY Match.DateTime DESC;
+      SELECT count(match_id) as match_count FROM Player LEFT OUTER JOIN PlayerStatsByMatch on Player.id = player_id;
     `;
     let [results] = await app._conn.query(sql_query);
-    let [[player], [team], [adr], [kills], [deaths], [partidas_count], matches] = results;
+    let [[player], [team], [adr], [kills], [deaths], [partidas_count], matches, [match_count]] = results;
     for (var i = 0; i < matches.length; i++){
 	match = matches[i]
 	match.date = match.DateTime.toLocaleString("pt-BR", {day:'2-digit', month:'2-digit', year:'2-digit', hour: '2-digit', minute:'2-digit'});
@@ -101,7 +103,8 @@ app.get('/player/:player_id', async (req, res) => {
 		kills: kills.sum_kills,
 		deaths : deaths.sum_deaths,
 		matches : matches,
-		partidas_quant: partidas_count.partidas})
+		partidas_quant: match_count.match_count,
+	       })
 })
 
 
